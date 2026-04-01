@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import {Link} from "react-router-dom"
-import api from "../route_section/api";
 import {useNavigate} from "react-router-dom"
 
-
+const RenderError = () => {
+  return (
+    <div>
+      <span className="text-purple-400 text-sm">Something went wrong. Try again.</span>
+    </div>
+  )
+}
 
 const InputField = ({ label, value, onChange, isMobile }) =>{
 return (
@@ -26,6 +31,14 @@ const Button = ({handleLogin}) => {
   )
 }
 
+const LoginError = () => {
+  return (
+    <div>
+      <span className="text-purple-400 text-sm">You brought in the wrong credentials</span>
+    </div>
+  )
+}
+
 
 const Login =  () => {
   const isMobile = useMediaQuery({ maxWidth: 320 });
@@ -36,6 +49,7 @@ const Login =  () => {
   const [loading, setLoading] = useState(false);
   const [userStatus , setUserStatus] = useState('')
   const navigate = useNavigate()
+  const [unable, setUnable] = useState(false)
 
 
 
@@ -44,27 +58,30 @@ const handleLogin = async () => {
     setLoading(true);
     
     const bodyData = new URLSearchParams();
+
     bodyData.append("username", debouncedEmail);
     bodyData.append("password", debouncedPass);
 
     try {
-      const response = await api({url:`/auth/jwt/login`,
-        method:"post",
-        headers : {"Content-Type":"application/x-www-form-urlencoded"},
-        data: bodyData,
-        timeout: 7000,
-        withCredentials: true
-      })
-
-      if (response.status == 204 ) {
-        console.log(response)
-        alert("You have been logged in.")
+      const response = await fetch(
+        'http://127.0.0.1:8000/auth/jwt/login',
+        {
+          method:"POST",
+          headers : {"Content-Type":"application/x-www-form-urlencoded"},
+          body : bodyData,
+        }
+      )
+      const data = await response.json()
+      console.log("Access token: ",data.access_token)
+      sessionStorage.setItem("access_token",data.access_token)
+      if (response.status == 200 ) {
         navigate("/main_page")
       } else {
-        alert("Invalid credentials");
+        alert("Request failed");
       }
     } catch (error) {
-      console.error("Check your Internet Connection or this error message:", error.message);
+      setUserStatus(<RenderError/>)
+
     } finally {
       setLoading(!loading);
     }
@@ -85,7 +102,7 @@ const handleLogin = async () => {
  )
   return (
     <div className="bg-purple-400 h-screen w-screen flex justify-center items-center">
-      <div className={`bg-white rounded-md shadow-2xl  p-6 ${isMobile ? "w-64 h-80" : "w-96 h-70 "}`}>
+      <div className={`bg-white rounded-md shadow-2xl  p-6 ${isMobile ? "w-64 h-80" : "w-96 h-80 "}`}>
         <div className="flex justify-center items-center font-medium"><span className="top  text-purple-400">Login to your account</span></div>
         <ul className="space-y-4 font-medium m-3">
           <InputField 
@@ -101,6 +118,9 @@ const handleLogin = async () => {
             isMobile={isMobile} 
           />
         </ul>
+        <div className="h-5 flex justify-center items-center">
+        {userStatus}
+        </div>
         <div className={`flex flex-col justify-center items-center ${isMobile ? 'p-1':'p-3'} space-y-4`}>
           <Button handleLogin={handleLogin} />
           <Link to = "/create_account">

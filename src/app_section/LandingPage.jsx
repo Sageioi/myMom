@@ -1,7 +1,10 @@
 import { useState,useEffect } from 'react'
 import {Link} from 'react-router-dom';
 import main_image from '../assets/pexels-edmond-dantes-8067744.jpg'
-
+import react_svg from '../assets/react.svg'
+import python_svg from '../assets/python-svgrepo-com.svg'
+import copyright_svg from '../assets/copyright-svgrepo-com.svg'
+import trademark_svg from '../assets/trademark-svgrepo-com.svg'
 
 const LandingPage = () => {
     return (
@@ -9,13 +12,15 @@ const LandingPage = () => {
         <div>
         <div className='bg-purple-400 h-15 w-screen flex justify-between text-white'>
         <div className= 'top flex p-4 font-extrabold font-mono'>
-            <span>Built by TegaTech</span>
+            <ul className='flex space-x-3'>
+            <li><span>TegaTask.</span></li>
+            <li><span>Built by TegaTech.</span></li>
+            </ul>
         </div>
         <div className='right flex p-4 pr-10 font-extrabold font-mono '>
             <ul className='flex space-x-10'>
                 <li><Link to="/create_account">Sign Up</Link></li>
                 <li><Link to = "/login">Login</Link></li>
-                <li><Link to = "/about"><button>About</button></Link></li>
             </ul>
         </div>
         </div>
@@ -28,12 +33,26 @@ const LandingPage = () => {
                     <img src={main_image} loading='lazy'/>
                 </div>
             </div>
-            <div className='w-screen text-white font-mono font-bold bg-purple-400 h-15 mono flex justify-center items-center'>
-                Put Copyrights and cool shit here
+            <div className='w-screen text-white p-3 font-mono font-bold bg-purple-400 h-15 flex mono justify-between items-center'>
+                <ul className='flex items-center space-x-2'>
+               <li><img src={copyright_svg} className='h-5'/></li>
+                <li><span>Tegatech technologies</span></li>
+                </ul>
+                <ul className='flex items-center space-x-2'>
+               <li><span>Built with React</span></li>
+               <li><img src={react_svg} className='h-5'/></li>
+                <li><span> and Powered by Python</span></li>
+               <li><img src={python_svg} className='h-8'/></li>
+               </ul>
+                <ul className='flex items-center space-x-1'>
+                 <li><img src={trademark_svg} className='h-4'/></li>
+                 <li><span>Tegatask</span></li>
+               </ul>
+               </div>
             </div>
         </div>
     </div>
-    </div>
+
    
     )
 }
