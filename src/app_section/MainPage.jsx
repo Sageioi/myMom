@@ -38,7 +38,6 @@ const RenderTask = ({task_data, token}) => {
     const name = task_data.task_name
     const handleDelete = async (name) => {
     try {
-    const bodyData = {"task_name":name}
     const response = await fetch('http://127.0.0.1:8000/delete_task',
         {
             method : "DELETE",
@@ -46,7 +45,7 @@ const RenderTask = ({task_data, token}) => {
                 "Authorization" : `Bearer ${token}`,
                 "Content-Type" : "application/json"
             },
-            body : JSON.stringify(bodyData)
+            body : JSON.stringify(name)
         }
     )
     const data = await response.json()
