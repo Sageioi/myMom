@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 
+
 const InputField = ({ label, value, onChange, isMobile }) =>{
 return (
   <li className={isMobile ? "flex flex-col" : "grid grid-cols-2 gap-4"}>
@@ -53,6 +54,7 @@ const CreateAccount = () => {
 
 
 
+
    
 const handleLogin = async () => {
     setLoading(true);
@@ -75,6 +77,7 @@ const handleLogin = async () => {
           body : JSON.stringify(bodyData),
         }
       )
+      navigate("/login")
       console.log(response.json())
 
     } catch (error) {
