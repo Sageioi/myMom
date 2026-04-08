@@ -155,6 +155,51 @@ useEffect(() => {
     handleGet()
 },[]
 )
+ const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [status, setStatus] = useState("");
+
+  
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      if (!selectedFile.type.startsWith("image/")) {
+        setStatus("Please select a valid image file.");
+        return;
+      }
+      setFile(selectedFile);
+      setPreview(URL.createObjectURL(selectedFile)); // Show preview
+      setStatus("");
+    }
+  };
+  const handleUpload = async () => {
+    if (!file) {
+      setStatus("No file selected.");
+      return;
+    }
+
+    try {
+      setStatus("Uploading...");
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await fetch("https://your-server.com/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Upload failed: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      setStatus(`Upload successful! File URL: ${result.url}`);
+    } catch (error) {
+      setStatus(`Error: ${error.message}`);
+    }
+  };
+
     
    const create_task = async () => {
     const params = new URLSearchParams()
@@ -192,7 +237,8 @@ useEffect(() => {
                 <li><img src={notepad} className='h-6'/></li>
                 </ul>
                 <div className='w-10 h-10 bg-purple-400 rounded-4xl'>
-
+                     <input type="file" accept="image/*" onChange={handleFileChange} />
+                     <button onClick={handleUpload}>Upload</button>
                 </div>
             </div>
             <div className='w-50 p-3 font-medium text-white flex'>
