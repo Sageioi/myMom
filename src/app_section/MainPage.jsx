@@ -3,6 +3,7 @@ import { useMediaQuery } from "react-responsive";
 import notepad from '../assets/notepad-svgrepo-com.svg'
 import add from '../assets/add-circle-svgrepo-com.svg'
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const CreateTask = ({task,descr,handleSubmit}) => {
@@ -106,6 +107,7 @@ const Task_Manager =  () => {
     const debouncedDescrRef = useRef('')
     const [task, setTask] = useState([])
     const [retrstatus, setRetrstatus] = useState(false)
+    const navigate = useNavigate()
     console.log(`Debounced Name: ${debouncedName}, Debounced Description: ${debouncedDescr}`)
         useEffect (
         () => {
