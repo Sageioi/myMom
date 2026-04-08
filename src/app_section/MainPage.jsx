@@ -25,16 +25,6 @@ const CreateTask = ({task,descr,handleSubmit}) => {
 
 
 
-const RenderNothing = () => {
-    return (
-        <div className='rounded-lg w-49/50 h-100 bg-white m-4 flex justify-center text-2xl items-center flex-col font-medium text-purple-400'>
-          <span>There is no task here.</span>
-           <span>Click + to get started</span>
-        </div>
-    )
-}
-
-
 
 const RenderTask = ({task_data, token, onDelete}) => {
     const name = task_data.task_name
@@ -60,10 +50,9 @@ const RenderTask = ({task_data, token, onDelete}) => {
         console.log(`This error occured :${error}`)
     } 
 }
-     if (!Array.isArray(task_data) || task_data.length === 0) return <RenderNothing/>;
       return (
-    <div className='rounded-lg w-49/50 p-4 h-105 bg-white m-4 flex-col justify-center font-medium text-purple-400  '>
-        <div className='space-y-4'>
+   <div className={!Array.isArray(task_data) || task_data.length === 0 ?  "" :'rounded-lg w-49/50 p-4 bg-white m-4 flex-col justify-center font-medium text-purple-400' } >
+    {Array.isArray(task_data) && task_data.length > 0 ? (<div className='space-y-4'>
             {task_data.map((item) => ( 
                 <div key={item.id} className='max-h-30 p-2 w-50/50 rounded-lg bg-purple-400 font-medium text-white'>
                 <ul className='flex justify-center space-x-40 text-sm items-center'>
@@ -81,6 +70,7 @@ const RenderTask = ({task_data, token, onDelete}) => {
                 </div>
             ))}
         </div>
+    ) : (<div className='flex justify-center items-center h-20 text-purple-400'><span className='text-2xl'>No Tasks Available</span></div>)}
         </div>
     )
 }
@@ -105,7 +95,7 @@ const Task_Manager =  () => {
     const [task, setTask] = useState([])
     const [retrstatus, setRetrstatus] = useState(false)
     const navigate = useNavigate()
-    console.log(`Debounced Name: ${debouncedName}, Debounced Description: ${debouncedDescr}`)
+    const [imageSrc, setImageSrc] = useState();
         useEffect (
         () => {
             const handler = setTimeout(
@@ -134,16 +124,9 @@ const handleGet = async () => {
         }
     )
     const data = await response.json()
-    data.tasks.length = 4
+    data.tasks.slice(0,4)
     setTask(data.tasks)
     setRetrstatus(Array.isArray(data.tasks) && data.tasks.length > 0)
-    if (response.ok) {
-        console.log("Task Gotten")
-        console.log(data.tasks)
-    }
-    else {
-        console.log("Task Retrieval not successful.")
-    }
 }
     catch (error){
         console.log(`Check Internet Connection or this error message : ${error}`)
@@ -155,7 +138,7 @@ useEffect(() => {
 },[]
 )
  const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [preview, setPreview] = useState();
   const [status, setStatus] = useState("");
 
   
@@ -167,9 +150,9 @@ useEffect(() => {
         return;
       }
       setFile(selectedFile);
-      setPreview(URL.createObjectURL(selectedFile)); // Show preview
+      setPreview(URL.createObjectURL(selectedFile)); 
       setStatus("");
-      await handleUpload(selectedFile); // Upload the file
+      await handleUpload(selectedFile); 
     }
   };
   const handleUpload = async (selectedFile) => {
@@ -212,7 +195,6 @@ useEffect(() => {
         }
         )
           const data = await response.json()
-          console.log(data)
         if (response.ok) {
             console.log("Task is Created")
             setCTask(null)  
@@ -226,6 +208,31 @@ useEffect(() => {
         console.log(`Check Internet Connection or this error message : ${error}`)
     }
 }
+    
+
+const fetchImage = async () => {
+try {
+const response = await fetch("http://127.0.0.1:8000/get_photo",
+    {
+        method: "GET",
+        headers: {
+            "Authorization": `Bearer ${access_token}`,   
+        }
+
+    }
+); 
+const blob = await response.blob(); 
+const imageURL = URL.createObjectURL(blob); 
+setImageSrc(imageURL); 
+} catch (error) {
+console.error("Error fetching image:", error);
+}
+};
+
+useEffect(() => {
+fetchImage();
+}, []);
+
     return (
     <div>
         <div className= {`bg-purple-400 flex-col h-screen w-screen`}>
@@ -244,7 +251,7 @@ useEffect(() => {
                         />
                         <label htmlFor="fileInput" className="cursor-pointer">
                             <img
-                                src={preview || person}
+                                src={preview || imageSrc || person}
                                 className='h-8 w-8 rounded-full object-cover'
                             />
                         </label>
@@ -261,7 +268,6 @@ useEffect(() => {
         </div>
     </div>
     )
-    
 }
 
 export default Task_Manager;

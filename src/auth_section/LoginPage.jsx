@@ -70,12 +70,11 @@ const handleLogin = async () => {
         }
       )
       const data = await response.json()
-      console.log("Access token: ",data.access_token)
       sessionStorage.setItem("access_token",data.access_token)
       if (response.status == 200 ) {
         navigate("/main_page")
       } else {
-        alert("Request failed");
+         setUserStatus(<LoginError/>)
       }
     } catch (error) {
       setUserStatus(<RenderError/>)
