@@ -52,13 +52,9 @@ const RenderTask = ({task_data, token, onDelete}) => {
     )
     const data = await response.json()
     console.log(data)
-    if (response.status == 204){
-        console.log("Task Deleted")
-        onDelete()
-    }
-    else {
-        console.log("Task couldn't be deleted")
-    }
+    console.log("Task Deleted")
+    onDelete()
+
 }
     catch (error) {
         console.log(`This error occured :${error}`)
