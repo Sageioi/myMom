@@ -196,7 +196,6 @@ useEffect(() => {
         )
           const data = await response.json()
         if (response.ok) {
-            console.log("Task is Created")
             setCTask(null)  
             handleGet() 
         }
