@@ -4,6 +4,7 @@ import notepad from '../assets/notepad-svgrepo-com.svg'
 import add from '../assets/add-circle-svgrepo-com.svg'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import person from '../assets/icons8-contact-100.png'
 
 
 const CreateTask = ({task,descr,handleSubmit}) => {
@@ -35,7 +36,7 @@ const RenderNothing = () => {
 
 
 
-const RenderTask = ({task_data, token}) => {
+const RenderTask = ({task_data, token, onDelete}) => {
     const name = task_data.task_name
     const handleDelete = async (name) => {
     try {
@@ -53,7 +54,7 @@ const RenderTask = ({task_data, token}) => {
     console.log(data)
     if (response.status == 204){
         console.log("Task Deleted")
-        navigate('/main_page')
+        onDelete()
     }
     else {
         console.log("Task couldn't be deleted")
@@ -88,10 +89,10 @@ const RenderTask = ({task_data, token}) => {
     )
 }
 
-const RenderThings = ({task_data,task_status , token}) => {
+const RenderThings = ({task_data, task_status, token, onDelete}) => {
     return (
         <div>
-        {task_status &&  <RenderTask task_data = {task_data} token = {token}  /> }
+            {task_status && <RenderTask task_data={task_data} token={token} onDelete={onDelete}/>}
         </div>
     )
 }
@@ -162,7 +163,7 @@ useEffect(() => {
   const [status, setStatus] = useState("");
 
   
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       if (!selectedFile.type.startsWith("image/")) {
@@ -172,25 +173,22 @@ useEffect(() => {
       setFile(selectedFile);
       setPreview(URL.createObjectURL(selectedFile)); // Show preview
       setStatus("");
+      await handleUpload(selectedFile); // Upload the file
     }
   };
-  const handleUpload = async () => {
-    if (!file) {
-      setStatus("No file selected.");
-      return;
-    }
+  const handleUpload = async (selectedFile) => {
 
     try {
       setStatus("Uploading...");
 
       const formData = new FormData();
-      formData.append("image", file);
+      formData.append("user_image", selectedFile);
 
-      const response = await fetch("https://your-server.com/upload", {
+      const response = await fetch("http://127.0.0.1:8000/post_profile_photo", {
         method: "POST",
+        headers : {"Authorization": `Bearer ${access_token}`},
         body: formData,
       });
-
       if (!response.ok) {
         throw new Error(`Upload failed: ${response.statusText}`);
       }
@@ -207,6 +205,7 @@ useEffect(() => {
     const params = new URLSearchParams()
     params.append("task_name",debouncedNameRef.current)
     params.append("task_description",debouncedDescrRef.current)
+
     try {
         const response = await fetch('http://127.0.0.1:8000/create_task',{
             method : "POST",
@@ -220,7 +219,8 @@ useEffect(() => {
           console.log(data)
         if (response.ok) {
             console.log("Task is Created")
-            navigate('/main_page')
+            setCTask(null)  
+            handleGet() 
         }
         else {
             console.log("Task creation not successful.")
@@ -238,10 +238,21 @@ useEffect(() => {
                 <li><span>Tegatask</span></li>
                 <li><img src={notepad} className='h-6'/></li>
                 </ul>
-                <div className='w-10 h-10 bg-purple-400 rounded-4xl'>
-                     <input type="file" accept="image/*" onChange={handleFileChange} />
-                     <button onClick={handleUpload}>Upload</button>
-                </div>
+                <div className='w-9 h-10 bg-purple-400 rounded-4xl flex justify-center items-center'>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            id="fileInput"
+                            className="hidden"
+                            onChange={handleFileChange}
+                        />
+                        <label htmlFor="fileInput" className="cursor-pointer">
+                            <img
+                                src={preview || person}
+                                className='h-8 w-8 rounded-full object-cover'
+                            />
+                        </label>
+                    </div>
             </div>
             <div className='w-50 p-3 font-medium text-white flex'>
                 <ul className='flex space-x-2 items-center pl-3'>
@@ -250,7 +261,7 @@ useEffect(() => {
                 </ul>
             </div>
             {c_task}
-            {<RenderThings task_data = {task} task_status = {retrstatus} token = {access_token} />}
+            {<RenderThings task_data = {task} task_status = {retrstatus} token = {access_token} onDelete={handleGet}  />}
         </div>
     </div>
     )
