@@ -34,7 +34,7 @@ const RenderNothing = () => {
 
 
 
-const RenderTask = ({task_data, token}) => {
+const RenderTask = ({task_data, token, onDelete}) => {
     const name = task_data.task_name
     const handleDelete = async (name) => {
     try {
@@ -50,8 +50,9 @@ const RenderTask = ({task_data, token}) => {
     )
     const data = await response.json()
     console.log(data)
-    if (response.ok){
-        console.log("Task has been completed or deleted")
+    if (response.status = 204){
+        console.log("Task Deleted")
+        onDelete()
     }
     else {
         console.log("Task couldn't be deleted")
@@ -86,10 +87,10 @@ const RenderTask = ({task_data, token}) => {
     )
 }
 
-const RenderThings = ({task_data,task_status , token}) => {
+const RenderThings = ({task_data,task_status , token, onDelete}) => {
     return (
         <div>
-        {task_status &&  <RenderTask task_data = {task_data} token = {token} /> }
+        {task_status &&  <RenderTask task_data = {task_data} token = {token} onDelete = {onDelete} /> }
         </div>
     )
 }
@@ -172,7 +173,7 @@ useEffect(() => {
           console.log(data)
         if (response.ok) {
             console.log("Task is Created")
-            alert("Your task has been created")
+            handleGet()
         }
         else {
             console.log("Task creation not successful.")
@@ -201,7 +202,7 @@ useEffect(() => {
                 </ul>
             </div>
             {c_task}
-            {<RenderThings task_data = {task} task_status = {retrstatus} token = {access_token}/>}
+            {<RenderThings task_data = {task} task_status = {retrstatus} token = {access_token} onDelete = {handleGet}/>}
         </div>
     </div>
     )
