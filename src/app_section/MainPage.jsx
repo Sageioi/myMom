@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import person from '../assets/icons8-contact-100.png'
 
-
-const CreateTask = ({task,descr,handleSubmit}) => {
+const API_URL = import.meta.env.VITE_API_URL
+const CreateTask = ({task,descr,handleSubmit, isMobile}) => {
     return (
-        <div className='h-15 w-screen p-2 flex items-center justify-center'>
-            <div className='bg-white w-48/50 h-15 rounded-lg items-center p-2 flex justify-between text-1xl text-purple-400 font-medium'>
-             <ul className='flex space-x-2'>
-                <li className='space-x-2'><span>Name of Task</span><input className='border-2 p-2 h-6 rounded-lg outline-1 outline-purple-400' onChange={(e)=> task(e.target.value)}/></li>
+        <div className={`h-15 w-screen ${isMobile ? 'mt-4 p-2':'p-2'} flex items-center justify-center`}>
+            <div className={`bg-white ${isMobile ? 'w-49/50 h-27': 'w-48/50 h-15'}  rounded-lg items-center p-2 flex justify-between text-1xl text-purple-400 font-medium`}>
+             <ul className={`space-x-2 ${isMobile ? 'flex-col' : 'flex'}`}>
+                <li className='space-x-2'><span>Name of Task</span><input className={`border-2  p-2 h-6 rounded-lg outline-1 outline-purple-400`} onChange={(e)=> task(e.target.value)}/></li>
                 <li className='space-x-2'><span>Task Description</span><input className='border-2 p-2 h-6 rounded-lg outline-1 outline-purple-400' onChange={(e) => descr(e.target.value)}/></li>
              </ul>
              <ul className='pr-3 flex space-x-10'>
@@ -27,10 +27,11 @@ const CreateTask = ({task,descr,handleSubmit}) => {
 
 
 const RenderTask = ({task_data, token, onDelete}) => {
+    const isMobile = useMediaQuery({ maxWidth: 320 });
     const name = task_data.task_name
     const handleDelete = async (name) => {
     try {
-    const response = await fetch('http://127.0.0.1:8000/delete_task',
+    const response = await fetch(`${API_URL}/delete_task`,
         {
             method : "DELETE",
             headers : {
@@ -50,7 +51,36 @@ const RenderTask = ({task_data, token, onDelete}) => {
         console.log(`This error occured :${error}`)
     } 
 }
-      return (
+
+   if (isMobile) {
+    return (
+        <div className={!Array.isArray(task_data) || task_data.length === 0 ?  "" :`rounded-lg w-45/50 ${isMobile ? 'm-2 p-2' : 'p-4'} bg-white m-4 flex-col justify-center font-medium text-purple-400` }>
+            {task_data.map ((item) => (
+            <div key={item.id} className='max-h-50 p-2 w-50/50 rounded-lg bg-purple-400 font-medium text-white'>
+                <ul className='flex text-sm space-x-40 items-center'>
+                     <li className='w-5'><span>Name</span></li>
+                     <li className='w-5'><span>Task description</span></li>
+                </ul>
+                <ul className='flex text-sm space-x-40 items-center'>
+                      <li className='w-1'><span>{item.task_name}</span></li>
+                       <li className='w-1 '><span>{item.task_description}</span></li>
+                </ul>
+                     <ul className='flex text-sm space-x-40 items-center'>
+                     <li className='w-1'><span>Date Created</span></li>
+                     <li className='w-1'><span></span></li>
+                </ul>
+                <ul className='text-sm space-x-40 0 items-center flex'>
+                      <li className='w-1'><span>{item.date_created}</span></li>
+                      <li className='w-1 '><button className='border-2 border-white p-1 rounded-lg' id={item.task_name} onClick={() => handleDelete(item.task_name)}>Check</button></li>
+            </ul>
+            </div>)
+            )
+            }
+        </div>
+    )
+   }
+   else {
+    return (
    <div className={!Array.isArray(task_data) || task_data.length === 0 ?  "" :'rounded-lg w-49/50 p-4 bg-white m-4 flex-col justify-center font-medium text-purple-400' } >
     {Array.isArray(task_data) && task_data.length > 0 ? (<div className='space-y-4'>
             {task_data.map((item) => ( 
@@ -73,12 +103,14 @@ const RenderTask = ({task_data, token, onDelete}) => {
     ) : (<div className='flex justify-center items-center h-20 text-purple-400'><span className='text-2xl'>No Tasks Available</span></div>)}
         </div>
     )
+   }
+      
 }
 
-const RenderThings = ({task_data, task_status, token, onDelete}) => {
+const RenderThings = ({task_data, task_status, token, isMobile, onDelete}) => {
     return (
         <div>
-            {task_status && <RenderTask task_data={task_data} token={token} onDelete={onDelete}/>}
+            {task_status && <RenderTask task_data={task_data} token={token} isMobile = {isMobile} onDelete={onDelete} />}
         </div>
     )
 }
@@ -115,7 +147,7 @@ const Task_Manager =  () => {
 const handleGet = async () => {
     try {
     const response = await fetch(
-        'http://127.0.0.1:8000/get_tasks',{
+        `${API_URL}/get_tasks`,{
             method:"GET",
             headers: {
                 "Authorization":`Bearer ${access_token}`,
@@ -163,7 +195,7 @@ useEffect(() => {
       const formData = new FormData();
       formData.append("user_image", selectedFile);
 
-      const response = await fetch("http://127.0.0.1:8000/post_profile_photo", {
+      const response = await fetch(`${API_URL}/post_profile_photo`, {
         method: "POST",
         headers : {"Authorization": `Bearer ${access_token}`},
         body: formData,
@@ -186,7 +218,7 @@ useEffect(() => {
     params.append("task_description",debouncedDescrRef.current)
 
     try {
-        const response = await fetch('http://127.0.0.1:8000/create_task',{
+        const response = await fetch(`${API_URL}/create_task`,{
             method : "POST",
             headers : {"Authorization" : `Bearer ${access_token}`,
                 "Content-Type":"application/x-www-form-urlencoded"
@@ -211,7 +243,7 @@ useEffect(() => {
 
 const fetchImage = async () => {
 try {
-const response = await fetch("http://127.0.0.1:8000/get_photo",
+const response = await fetch(`${API_URL}/get_photo`,
     {
         method: "GET",
         headers: {
@@ -251,7 +283,7 @@ fetchImage();
                         <label htmlFor="fileInput" className="cursor-pointer">
                             <img
                                 src={preview || imageSrc || person}
-                                className='h-8 w-8 rounded-full object-cover'
+                                className='h-9 w-8 rounded-full object-cover'
                             />
                         </label>
                     </div>
@@ -259,11 +291,11 @@ fetchImage();
             <div className='w-50 p-3 font-medium text-white flex'>
                 <ul className='flex space-x-2 items-center pl-3'>
                 <li ><span className='text-1xl'>Create New</span></li>
-                <li className='pt-2'><button className='items-center' onClick={()=>setCTask(<CreateTask task = {setTaskName} descr = {setTaskDescr} handleSubmit={create_task}/>)}><img src={add} className='h-5'/></button></li>
+                <li className={'pt-2'}><button className='items-center' onClick={()=>setCTask(<CreateTask task = {setTaskName} descr = {setTaskDescr} handleSubmit={create_task} isMobile = {isMobile}/>)}><img src={add} className='h-5'/></button></li>
                 </ul>
             </div>
             {c_task}
-            {<RenderThings task_data = {task} task_status = {retrstatus} token = {access_token} onDelete={handleGet}  />}
+            {<RenderThings task_data = {task} task_status = {retrstatus} token = {access_token} deviceWidth = {isMobile} onDelete={handleGet}  />}
         </div>
     </div>
     )

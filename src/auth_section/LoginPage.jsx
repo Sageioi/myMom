@@ -50,7 +50,7 @@ const Login =  () => {
   const [userStatus , setUserStatus] = useState('')
   const navigate = useNavigate()
   const [unable, setUnable] = useState(false)
-
+  const API_URL = import.meta.env.VITE_API_URL
    
 const handleLogin = async () => {
     setLoading(true);
@@ -62,7 +62,7 @@ const handleLogin = async () => {
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:8000/auth/jwt/login',
+        `${API_URL}/auth/jwt/login`,
         {
           method:"POST",
           headers : {"Content-Type":"application/x-www-form-urlencoded"},
@@ -99,7 +99,7 @@ const handleLogin = async () => {
  )
   return (
     <div className="bg-purple-400 h-screen w-screen flex justify-center items-center">
-      <div className={`bg-white rounded-md shadow-2xl  p-6 ${isMobile ? "w-64 h-80" : "w-96 h-80 "}`}>
+      <div className={`bg-white rounded-md shadow-2xl  p-6 ${isMobile ? "w-64 h-90" : "w-96 h-80 "}`}>
         <div className="flex justify-center items-center font-medium"><span className="top  text-purple-400">Login to your account</span></div>
         <ul className="space-y-4 font-medium m-3">
           <InputField 
