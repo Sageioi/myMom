@@ -78,12 +78,13 @@ const handleLogin = async () => {
           body : JSON.stringify(bodyData),
         }
       )
-      navigate("/login")
+      const data = await response.json()
+      console.log(data)
       if (response.status.ok ) {
         navigate("/login")
       }
       else {
-        setUserStatus(<LoginError/>)
+        setUserStatus(<RenderError/>)
       }
 
     } catch (error) {

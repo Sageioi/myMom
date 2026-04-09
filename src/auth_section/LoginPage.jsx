@@ -72,8 +72,9 @@ const handleLogin = async () => {
           body : bodyData,
         }
       )
-      const data = await response.json()
       sessionStorage.setItem("access_token",data.access_token)
+      const data = await response.json()
+      console.log(data)
       if (response.status == 200 ) {
         navigate("/main_page")
       } else {
