@@ -78,7 +78,12 @@ const handleLogin = async () => {
         }
       )
       navigate("/login")
-      console.log(response.json())
+      if (response.status.ok ) {
+        navigate("/login")
+      }
+      else {
+        setUserStatus(<LoginError/>)
+      }
 
     } catch (error) {
       console.error("Check your Internet Connection or this error message:", error.message);
