@@ -3,6 +3,8 @@ import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 
 
+const API_URL = import.meta.env.VITE_API_URL
+
 const InputField = ({ label, value, onChange, isMobile }) =>{
 return (
   <li className={isMobile ? "flex flex-col" : "grid grid-cols-2 gap-4"}>
@@ -50,7 +52,6 @@ const CreateAccount = () => {
   const navigate = useNavigate()
   const [userStatus, setUserStatus] = useState('')
   const [unable, setUnable] = useState(false)
-  const API_URL = import.meta.env.VITE_API_URL
 
 
 

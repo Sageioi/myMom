@@ -3,6 +3,10 @@ import { useMediaQuery } from "react-responsive";
 import {Link} from "react-router-dom"
 import {useNavigate} from "react-router-dom"
 
+
+const API_URL = import.meta.env.VITE_API_URL
+
+
 const RenderError = () => {
   return (
     <div>
@@ -50,7 +54,6 @@ const Login =  () => {
   const [userStatus , setUserStatus] = useState('')
   const navigate = useNavigate()
   const [unable, setUnable] = useState(false)
-  const API_URL = import.meta.env.VITE_API_URL
    
 const handleLogin = async () => {
     setLoading(true);
