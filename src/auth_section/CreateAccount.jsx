@@ -84,17 +84,11 @@ const handleLogin = async () => {
         navigate("/login")
       }
       
-      else if (response.status = 400) {
-        setUserStatus(<LoginError/>)
-      }
-      else{
-        return null
-      }
 
     } catch (error) {
       console.error("Check your Internet Connection or this error message:", error.message);
       setUnable(true)
-      setUserStatus(<RenderError/>)
+      setUserStatus(<LoginError/>)
     } finally {
       setLoading(false);
     }
