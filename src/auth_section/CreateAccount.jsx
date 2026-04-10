@@ -28,7 +28,7 @@ const RenderError = () => {
 const LoginError = () => {
   return (
     <div>
-      <span className="text-purple-400 text-sm">Validation of credentials failed. Try again</span>
+      <span className="text-purple-400 text-sm">User already exist. Try again</span>
     </div>
   )
 }
@@ -80,11 +80,15 @@ const handleLogin = async () => {
       )
       const data = await response.json()
       console.log(data)
-      if (response.ok ) {
+      if (response.status = 201 ) {
         navigate("/login")
       }
-      else {
-        setUserStatus(<RenderError/>)
+      
+      else if (response.status = 400) {
+        setUserStatus(<LoginError/>)
+      }
+      else{
+        return null
       }
 
     } catch (error) {
