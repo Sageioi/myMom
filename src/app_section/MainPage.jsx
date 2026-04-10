@@ -63,8 +63,8 @@ const RenderTask = ({task_data, token, onDelete}) => {
                      <li className='w-5'><span>Task description</span></li>
                 </ul>
                 <ul className='flex text-sm space-x-40 items-center'>
-                      <li className='w-1'><span>{item.task_name}</span></li>
-                       <li className='w-1 '><span>{item.task_description}</span></li>
+                      <li className='w-5'><span>{item.task_name}</span></li>
+                       <li className='w-5'><span>{item.task_description}</span></li>
                 </ul>
                      <ul className='flex text-sm space-x-40 items-center'>
                      <li className='w-1'><span>Date Created</span></li>
