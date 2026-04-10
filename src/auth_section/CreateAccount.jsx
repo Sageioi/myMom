@@ -111,7 +111,7 @@ const handleLogin = async () => {
  )
   return (
     <div className="bg-purple-400 h-screen w-screen flex justify-center items-center">
-      <div className={`bg-white rounded-md shadow-2xl  p-6 ${isMobile ? "w-64 h-70" : "w-96 h-70 "}`}>
+      <div className={`bg-white rounded-md shadow-2xl  p-6 ${isMobile ? "w-64 h-80" : "w-96 h-70 "}`}>
         <div className="flex justify-center items-center font-medium"><span className="top text-purple-400">Create Account</span></div>
         <ul className="space-y-4 font-medium m-3">
           <InputField 
