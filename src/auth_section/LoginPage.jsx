@@ -77,8 +77,11 @@ const handleLogin = async () => {
       if (response.status == 200 ) {
         navigate("/main_page")
       }
+      else {
+            setUserStatus(<LoginError/>)
+        }
     } catch (error) {
-        setUserStatus(<LoginError/>)
+        setUserStatus(<RenderError/>)
 
     } finally {
       setLoading(!loading);
