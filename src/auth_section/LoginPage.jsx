@@ -45,7 +45,7 @@ const LoginError = () => {
 
 
 const Login =  () => {
-  const isMobile = useMediaQuery({ maxWidth: 320 });
+  const isMobile = useMediaQuery({ maxWidth: 375 });
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [debouncedEmail, setDebouncedEmail] = useState('');

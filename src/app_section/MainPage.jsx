@@ -116,7 +116,7 @@ const RenderThings = ({task_data, task_status, token, isMobile, onDelete}) => {
 }
 
 const Task_Manager =  () => {
-    const isMobile = useMediaQuery({ maxWidth: 320 });
+    const isMobile = useMediaQuery({ maxWidth: 375 });
     const [task_name, setTaskName] = useState('')
     const [task_descr, setTaskDescr] = useState('')
     const [c_task, setCTask] = useState()
