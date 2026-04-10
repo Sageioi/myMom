@@ -76,14 +76,9 @@ const handleLogin = async () => {
       sessionStorage.setItem("access_token",data.access_token)
       if (response.status == 200 ) {
         navigate("/main_page")
-      } else if  (response.status == 400 ) {
-         setUserStatus(<LoginError/>)
-      }
-      else {
-        return null;
       }
     } catch (error) {
-      setUserStatus(<RenderError/>)
+        setUserStatus(<LoginError/>)
 
     } finally {
       setLoading(!loading);
