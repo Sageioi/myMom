@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://fastapiserver-production-51e4.up.railway.app/:path*"
-    }
-  ]
-}

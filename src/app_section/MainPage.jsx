@@ -31,7 +31,7 @@ const RenderTask = ({task_data, token, onDelete}) => {
     const name = task_data.task_name
     const handleDelete = async (name) => {
     try {
-    const response = await fetch(`/delete_task`,
+    const response = await fetch(`${API_URL}/delete_task`,
         {
             method : "DELETE",
             headers : {
@@ -147,7 +147,7 @@ const Task_Manager =  () => {
 const handleGet = async () => {
     try {
     const response = await fetch(
-        `/get_tasks`,{
+        `${API_URL}/get_tasks`,{
             method:"GET",
             headers: {
                 "Authorization":`Bearer ${access_token}`,
@@ -195,7 +195,7 @@ useEffect(() => {
       const formData = new FormData();
       formData.append("user_image", selectedFile);
 
-      const response = await fetch(`/post_profile_photo`, {
+      const response = await fetch(`${API_URL}/post_profile_photo`, {
         method: "POST",
         headers : {"Authorization": `Bearer ${access_token}`},
         body: formData,
@@ -243,7 +243,7 @@ useEffect(() => {
 
 const fetchImage = async () => {
 try {
-const response = await fetch(`/get_photo`,
+const response = await fetch(`${API_URL}/get_photo`,
     {
         method: "GET",
         headers: {

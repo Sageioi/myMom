@@ -65,7 +65,7 @@ const handleLogin = async () => {
 
     try {
       const response = await fetch(
-        `/auth/jwt/login`,
+        `${API_URL}/auth/jwt/login`,
         {
           method:"POST",
           headers : {"Content-Type":"application/x-www-form-urlencoded"},

@@ -70,7 +70,7 @@ const handleLogin = async () => {
 
     try {
       const response = await fetch(
-        `/auth/register`,
+        `${API_URL}/auth/register`,
         {
           method:"POST",
           headers : {"Content-Type":"application/json",
