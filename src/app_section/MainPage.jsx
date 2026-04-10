@@ -284,8 +284,9 @@ fetchImage();
                         />
                         <label htmlFor="fileInput" className="cursor-pointer">
                             <img
-                                src={preview || imageSrc || person}
+                                src={preview || imageSrc}
                                 className='h-9 w-8 rounded-full object-cover'
+                                alt={person}
                             />
                         </label>
                     </div>
