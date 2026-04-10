@@ -55,8 +55,9 @@ const RenderTask = ({task_data, token, onDelete}) => {
    if (isMobile) {
     return (
         <div className={!Array.isArray(task_data) || task_data.length === 0 ?  "" :`rounded-lg w-45/50 ${isMobile ? 'm-2 p-2' : 'p-4'} bg-white m-4 flex-col justify-center font-medium text-purple-400` }>
+            <div className='space-y-4'>
             {task_data.map ((item) => (
-            <div key={item.id} className='max-h-50 p-2 w-50/50 rounded-lg bg-purple-400 font-medium m-3 text-white'>
+            <div key={item.id} className='max-h-50 p-2 w-50/50 rounded-lg bg-purple-400 font-medium text-white'>
                 <ul className='flex text-sm space-x-40 items-center'>
                      <li className='w-5'><span>Name</span></li>
                      <li className='w-5'><span>Task description</span></li>
@@ -76,6 +77,7 @@ const RenderTask = ({task_data, token, onDelete}) => {
             </div>)
             )
             }
+            </div>
         </div>
     )
    }
