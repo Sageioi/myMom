@@ -28,7 +28,7 @@ const RenderError = () => {
 const LoginError = () => {
   return (
     <div>
-      <span className="text-purple-400 text-sm">User already exist. Try again</span>
+      <span className="text-purple-400 text-sm">User already exist or Validation of credentials failed. Try again</span>
     </div>
   )
 }
