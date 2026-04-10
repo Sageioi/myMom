@@ -80,7 +80,7 @@ const handleLogin = async () => {
       )
       const data = await response.json()
       console.log(data)
-      if (response.status = 201 ) {
+      if (response.status == 201 ) {
         navigate("/login")
       }
       else{
