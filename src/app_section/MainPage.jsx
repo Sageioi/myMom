@@ -27,7 +27,7 @@ const CreateTask = ({task,descr,handleSubmit, isMobile}) => {
 
 
 const RenderTask = ({task_data, token, onDelete}) => {
-    const isMobile = useMediaQuery({ maxWidth: 320 });
+    const isMobile = useMediaQuery({ maxWidth: 375 });
     const name = task_data.task_name
     const handleDelete = async (name) => {
     try {
