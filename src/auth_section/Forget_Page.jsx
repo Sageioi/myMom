@@ -3,6 +3,8 @@ import { useMediaQuery } from "react-responsive";
 import {Link} from "react-router-dom"
 import {useNavigate} from "react-router-dom"
 
+API_URL = import.meta.env.VITE_API_URL
+
 
 const InputField = ({ label, value, onChange, isMobile }) =>{
 return (
@@ -23,12 +25,29 @@ const Button = ({handleLogin}) => {
  >Request for token</button>
   )
 }
+const RenderError = () => {
+  return (
+    <div>
+      <span className="text-purple-400 text-sm">Something went wrong. Try again.</span>
+    </div>
+  )
+}
+
+const LoginError = () => {
+  return (
+    <div>
+      <span className="text-purple-400 text-sm">You brought in the wrong credentials</span>
+    </div>
+  )
+}
+
 
 const Forget_Page = () => {
     const isMobile = useMediaQuery({ maxWidth: 375 });
     const [email, setEmail] = useState('');
     const [debouncedEmail, setDebouncedEmail] = useState('');
-
+    const [userStatus , setUserStatus] = useState('')
+    const navigate = useNavigate()
     useEffect (
         () => {
             const handler = setTimeout(() => {
