@@ -87,6 +87,38 @@ const handleLogin = async () => {
       setLoading(!loading);
     }
   };
+
+   
+const handleForgot = async () => {
+    setLoading(true);
+    const bodyData = {
+      "email" : debouncedEmail
+    }
+
+    try {
+      const response = await fetch(
+        `${API_URL}/auth/forget-password`,
+        {
+          method:"POST",
+          headers : {"Content-Type":"application/json"},
+          body : bodyData,
+        }
+      )
+      const data = await response.json()
+      sessionStorage.setItem("access_token",data.forget_token)
+      if (response.status == 200 ) {
+        navigate("/main_page")
+      }
+      else {
+            setUserStatus(<LoginError/>)
+        }
+    } catch (error) {
+        setUserStatus(<RenderError/>)
+
+    } finally {
+      setLoading(!loading);
+    }
+  };
   
  useEffect(
   () => {
@@ -103,7 +135,7 @@ const handleLogin = async () => {
  )
   return (
     <div className="bg-purple-400 h-screen w-screen flex justify-center items-center">
-      <div className={`bg-white rounded-md shadow-2xl  p-6 ${isMobile ? "w-64 h-90" : "w-96 h-80 "}`}>
+      <div className={`bg-white rounded-md shadow-2xl  p-6 ${isMobile ? "w-64 h-100" : "w-96 h-90 "}`}>
         <div className="flex justify-center items-center font-medium"><span className="top  text-purple-400">Login to your account</span></div>
         <ul className="space-y-4 font-medium m-3">
           <InputField 
@@ -127,6 +159,8 @@ const handleLogin = async () => {
           <Link to = "/create_account">
           <button className="bg-white border-2 border-purple-400 text-purple-400 p-1 rounded-md flex font-medium">Create Account</button>
           </Link>
+          <Link to ="/forget_page">
+          <button className="text-purple-400 p-1 rounded-md flex font-medium">Forgot Password</button></Link>
         </div>
       </div>
     </div>
