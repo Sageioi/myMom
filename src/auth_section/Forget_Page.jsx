@@ -72,6 +72,7 @@ const Forget_Page = () => {
         }
       )
       const data = await response.json()
+      console.log(data)
       if (response.status == 202 ) {
         navigate("/verify_page")
       }
