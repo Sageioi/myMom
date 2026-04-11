@@ -68,7 +68,7 @@ const Forget_Page = () => {
         {
           method:"POST",
           headers : {"Content-Type":"application/json"},
-          body : bodyData,
+          body : JSON.stringify(bodyData),
         }
       )
       const data = await response.json()
