@@ -73,10 +73,11 @@ const Verify_Page = () => {
         {
           method:"POST",
           headers : {"Content-Type":"application/json"},
-          body : bodyData,
+          body : JSON.stringify(bodyData),
         }
       )
       const data = await response.json()
+      console.log(data)
       if (response.status == 200 ) {
         navigate("/login")
       }
