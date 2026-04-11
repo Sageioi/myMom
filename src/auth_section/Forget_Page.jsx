@@ -3,7 +3,7 @@ import { useMediaQuery } from "react-responsive";
 import {Link} from "react-router-dom"
 import {useNavigate} from "react-router-dom"
 
-API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL
 
 
 const InputField = ({ label, value, onChange, isMobile }) =>{

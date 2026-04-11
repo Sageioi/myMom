@@ -4,7 +4,7 @@ import {Link} from "react-router-dom"
 import {useNavigate} from "react-router-dom"
 
 
-API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL
 const InputField = ({ label, value, onChange, isMobile }) =>{
 return (
   <li className={isMobile ? "flex flex-col" : "grid grid-cols-2 gap-4"}>
