@@ -39,7 +39,6 @@ const Forget_Page = () => {
         },[email]
     )
     const handleForgot = async () => {
-    setLoading(true);
     const bodyData = {
       "email" : debouncedEmail
     }
@@ -63,8 +62,6 @@ const Forget_Page = () => {
     } catch (error) {
         setUserStatus(<RenderError/>)
 
-    } finally {
-      setLoading(!loading);
     }
   };
     return (
