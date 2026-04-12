@@ -159,8 +159,6 @@ const handleForgot = async () => {
           <Link to = "/create_account">
           <button className="bg-white border-2 border-purple-400 text-purple-400 p-1 rounded-md flex font-medium">Create Account</button>
           </Link>
-          <Link to ="/forget_page">
-          <button className="text-purple-400 p-1 rounded-md flex font-medium">Forgot Password</button></Link>
         </div>
       </div>
     </div>
